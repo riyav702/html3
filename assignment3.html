@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>T-Shirt Order Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .form-container {
+        max-width: 600px;
+        margin: auto;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+      .form-group button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .form-group button:hover {
+        background-color: #0056b3;
+      }
+      .receipt {
+        display: none;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>T-Shirt Order Form</h1>
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="mobile">Mobile No:</label>
+          <input type="text" id="mobile" name="mobile" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message on T-Shirt (Max 100 characters):</label>
+          <textarea
+            id="message"
+            name="message"
+            maxlength="100"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit">Submit Order</button>
+        </div>
+      </form>
+      <div id="receipt" class="receipt"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("orderForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Get form values
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const mobile = document.getElementById("mobile").value;
+          const message = document.getElementById("message").value;
+
+          // Validation
+          if (!validateMobile(mobile)) {
+            alert("Mobile number must be 9 digits long.");
+            return;
+          }
+
+          // Generate receipt
+          generateReceipt(name, email, mobile, message);
+        });
+
+      function validateMobile(mobile) {
+        const mobilePattern = /^\d{9}$/;
+        return mobilePattern.test(mobile);
+      }
+
+      function generateReceipt(name, email, mobile, message) {
+        const receipt = document.getElementById("receipt");
+        const date = new Date();
+        const dateString =
+          date.toLocaleDateString() + " " + date.toLocaleTimeString();
+
+        receipt.innerHTML = `
+                <h2>Order Receipt</h2>
+                <p><strong>Date:</strong> ${dateString}</p>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Mobile No:</strong> ${mobile}</p>
+                <p><strong>Message on T-Shirt:</strong> ${message}</p>
+            `;
+        receipt.style.display = "block";
+      }
+    </script>
+  </body>
+</html>
